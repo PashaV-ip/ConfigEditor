@@ -1,0 +1,566 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:ConfigEditor"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:ViewModel="clr-namespace:ConfigEditor.ViewModel" 
+    x:Class="ConfigEditor.MainWindow"
+    mc:Ignorable="d"
+    WindowStyle="None" 
+    ResizeMode="CanMinimize"
+    WindowState="{Binding StateWindow}"
+    WindowStartupLocation="CenterScreen"
+    Title="MainWindow" Height="550" Width="900" Background="{Binding BackgroundWindow}">
+    <Window.DataContext>
+        <ViewModel:MainMenuViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Background="{Binding ColorPanels}"  Opacity="{Binding OpacityPanels}" MouseDown="Border_MouseDown"/>
+            <Image Source="/Source/Images/Logo.png" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 0, 5"/>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Name="btnQuestion" Focusable="False"  Template="{DynamicResource ResourceKey=ControlButtons}" Content="" Command="{Binding OpenQuestion}">
+                    <Button.Resources>
+                        <ImageSource x:Key="Img">/Source/Images/question.png</ImageSource>
+                    </Button.Resources>
+                </Button>
+                <Button Name="btnInfo" Focusable="False"  Template="{DynamicResource ResourceKey=ControlButtons}" Content="" Command="{Binding OpenInfo}">
+                    <Button.Resources>
+                        <ImageSource x:Key="Img">/Source/Images/info.png</ImageSource>
+                    </Button.Resources>
+                </Button>
+                <Button Name="btnOptions" Focusable="False"  Template="{DynamicResource ResourceKey=ControlButtons}" Content="" Command="{Binding OpenOptions}">
+                    <Button.Resources>
+                        <ImageSource x:Key="Img">/Source/Images/gear.png</ImageSource>
+                    </Button.Resources>
+                </Button>
+                <Button Name="btnMinimize" Focusable="False" Template="{DynamicResource ResourceKey=ControlButtons}" Content="" Command="{Binding MinimizeWindow}">
+                    <Button.Resources>
+                        <ImageSource x:Key="Img">/Source/Images/window minimize.png</ImageSource>
+                    </Button.Resources>
+                </Button>
+                <Button Name="btnClose" Focusable="False" Template="{DynamicResource ResourceKey=ControlButtons}" Content="" Command="{Binding CloseApplication}">
+                    <Button.Resources>
+                        <ImageSource x:Key="Img">/Source/Images/cross mark.png</ImageSource>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+            <Grid Grid.Row="1" Name="SlideMenuGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Name="SlideMenu" Grid.Column="0" Width="60" Grid.Row="1" HorizontalAlignment="Left">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.3" Storyboard.TargetProperty="Width" To="225"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.3" Storyboard.TargetProperty="Width" To="60"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Border BorderThickness="1, 0, 1, 1" BorderBrush="#FF303031"/>
+                    <Border BorderThickness="0" Background="{Binding ColorPanels}" Opacity="{Binding OpacityPanels}"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Name="StackPanelSlideMenu" Height="auto" Orientation="Vertical" CanVerticallyScroll="True">
+                                <Button Template="{DynamicResource ResourceKey=SlideMenuButton}" Content="Demo Config">
+                                    <Button.Resources>
+                                        <ImageSource x:Key="Img">/Source/Images/config.png</ImageSource>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <Border Grid.Row="1" BorderThickness="0, 2, 0, 0" BorderBrush="#FF303031"/>
+                        <Border Grid.Row="1" BorderThickness="0, 1, 0, 0" BorderBrush="#474748"/>
+                        <Button Grid.Row="1" Command="{Binding CreateConfig}" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=AddButton}" Content="Создать">
+                        </Button>
+                        <Border Background="Black" Opacity="0.5" Grid.RowSpan="2" Visibility="Hidden"/>
+                    </Grid>
+                </Grid>
+
+
+                
+
+
+
+
+
+                <Grid Grid.Column="1" Margin="20" Visibility="{Binding ReferenceVisible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.ColumnSpan="15" Grid.RowSpan="15" Background="{Binding ColorPanels}" Opacity="{Binding OpacityPanels}" Margin="-10" CornerRadius="15"/>
+                    <TextBlock Text="Справка" Grid.Column="1" Grid.ColumnSpan="5" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFC7C7C7"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="10">
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="10">
+
+                            <TextBlock TextAlignment="Justify" Width="770" Text="Данный редактор файлов конфигураций, позволяет облегчить настройку конфигов, по средствам создания собственного набора необходимых настроек и удобного их редактирования." TextWrapping="Wrap" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="Как это работает?" Width="770" TextWrapping="Wrap" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 0, 0, 0" Text="У вас есть файлы конфигурации, и вам нужно вынести некоторые из их настроек в удобный графический интерфейс, чтобы облегчить их редактирование." Width="770" TextWrapping="Wrap" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="Для этого вам необходимо:" Width="770" TextWrapping="Wrap" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="- Навести мышь на панель в левой части окна и снизу нажать на кнопку 'Создать';" Width="770" TextWrapping="Wrap" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="- Откроется страница, где вы можете добавить файлы конфигураций, которые программа будет редактировать, в список и сохранить;" Width="770" TextWrapping="Wrap" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="- Далее у нас открываются две колонки: слева находятся выбранные вами параметры, а справа все параметры, которые были найдены в выбранных вами файлах;" Width="770" TextWrapping="Wrap" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="- Выбираем нужные параметры и переносим их в левый список, сохраняем;" Width="770" TextWrapping="Wrap" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="- Откроется страница с возможностью редактирования выбранных вами параметров;" Width="770" TextWrapping="Wrap" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock TextAlignment="Justify" Margin="0, 10, 0, 0" Text="- После настройки всех необходимых параметров нажимаем на кнопку 'Применить', и программа автоматически изменяет эти параметры в указанных вами файлах." Width="770" TextWrapping="Wrap" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+
+
+                <Grid Grid.Column="1" Margin="20" Visibility="{Binding InfoVisible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.ColumnSpan="15" Grid.RowSpan="15" Background="{Binding ColorPanels}" Opacity="{Binding OpacityPanels}" Margin="-10" CornerRadius="15"/>
+                    <TextBlock Text="О программе" Grid.Column="1" Grid.ColumnSpan="5" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFC7C7C7"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="10">
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="10">
+
+                            <TextBlock Margin="0, 0, 0, 10" TextAlignment="Justify" Width="770" Text="Название приложения: ConfigEditor" TextWrapping="Wrap" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock Margin="0, 10" TextAlignment="Justify" Width="770" Text="Версия: 1.0.0" TextWrapping="Wrap" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock Margin="0, 10" TextAlignment="Justify" Width="770" Text="Дата последнего обновления: 27.01.2024" TextWrapping="Wrap" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock Margin="0, 10" TextAlignment="Justify" Width="770" Text="Автор: Ваньшев Павел" TextWrapping="Wrap" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBlock Margin="0, 10, 0, 0" TextAlignment="Justify" Width="770" Text="Репозиторий проекта: " TextWrapping="Wrap" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+                            <TextBox Margin="0, 0, 0, 10" Background="Transparent" BorderThickness="0" IsReadOnly="True" Text="https://github.com/PashaV-ip/ModManager" TextWrapping="Wrap" FontSize="25" HorizontalAlignment="Center" Width="770" VerticalAlignment="Top" Foreground="#FFC7C7C7"/>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <Grid Grid.Column="1" Margin="20" Visibility="{Binding WorkSpaceVisible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.ColumnSpan="15" Grid.RowSpan="15" Background="{Binding ColorPanels}" Opacity="{Binding OpacityPanels}" Margin="-10" CornerRadius="15"/>
+                    
+                    <TextBlock Text="{Binding ConfigName}" Background="Transparent" Foreground="#FFC7C7C7" FontSize="30" HorizontalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="5" Margin="50,15, 50, 0"/>
+                    <ScrollViewer PanningDeceleration="1" PanningRatio="0.5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="15" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden">
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="15" Grid.RowSpan="3">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" FontSize="25" HorizontalAlignment="Center" Foreground="#FFC7C7C7" Content="Параметр"/>
+                                <Label Grid.Column="1" FontSize="25" HorizontalAlignment="Center" Foreground="#FFC7C7C7" Content="Значение"/>
+                            </Grid>
+
+                            <StackPanel Name="StackPanelParameterList">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="500"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.ColumnSpan="1" BorderBrush="#FFC7C7C7" BorderThickness="0, 0, 1, 0" CornerRadius="0"/>
+                                    <Border Grid.ColumnSpan="2" BorderBrush="#FFC7C7C7" BorderThickness="1" CornerRadius="3"/>
+                                    <Label FontSize="25" VerticalAlignment="Center" Margin="30,0" Foreground="#FFC7C7C7" Content="MasterAudioVolume"/>
+                                    <TextBox Grid.Column="1" CaretBrush="#FFC7C7C7" Text="0.50" Style="{DynamicResource TextBoxStyle}" Foreground="#FFC7C7C7" Padding="0, 5" Margin="3" VerticalAlignment="Center" FontSize="25"/>
+                                </Grid>
+
+
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Grid Grid.Row="4" Grid.ColumnSpan="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.ColumnSpan="15" Grid.RowSpan="15" Background="Transparent" BorderBrush="#FFC7C7C7" Opacity="0.5" BorderThickness="1" Margin="-10, 0, -10, -10" CornerRadius="0, 0, 15, 15"/>
+
+                        <Button Width="150" Grid.Row="0" Grid.Column="0" Margin="10, 0, 10, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Применить" Command="{Binding ApplyChang}">
+
+                        </Button>
+                        <Button Visibility="Collapsed" Width="150" Grid.Row="1" Grid.Column="1" Margin="10, 0, 10, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Параметры" Command="{Binding OpenParametersListConfig}">
+
+                        </Button>
+                        <Button Visibility="Visible" Width="150" Grid.Row="1" Grid.Column="5" Margin="10, 0, 10, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Удалить" Command="{Binding DeleteConfig}">
+
+                        </Button>
+                    </Grid>
+                </Grid>
+
+
+
+                <Grid Grid.Column="1" Margin="20" Visibility="{Binding SettingsPropertysVisible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.ColumnSpan="15" Grid.RowSpan="15" Background="{Binding ColorPanels}" Opacity="{Binding OpacityPanels}" Margin="-10" CornerRadius="15"/>
+                    <TextBlock Text="Выбранные параметры" Grid.Column="0" Grid.ColumnSpan="1" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFC7C7C7"/>
+                    <TextBlock Text="Параметры файлов" Grid.Column="2" Grid.ColumnSpan="1" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFC7C7C7"/>
+                    <Border BorderThickness="1" Grid.Row="1" Grid.RowSpan="3" BorderBrush="#FFC7C7C7" Margin="-10, 0, 0, -10" CornerRadius="15"/>
+                    <Border BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" BorderBrush="#FFC7C7C7" Margin="0, 0, -10, -10" CornerRadius="15"/>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="-3, 7, 7, 6" Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="1">
+                        <StackPanel Name="StackPanelSelectedProperties" Orientation="Vertical">
+                            <Label FontSize="20" Foreground="#FFC7C7C7" Content="TestSettings.ini" HorizontalContentAlignment="Center"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label VerticalAlignment="Center" Grid.Column="0" FontSize="20" Foreground="#FFC7C7C7" Content="MasterAudioVolume" HorizontalContentAlignment="Left"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Template="{DynamicResource ResourceKey=SmallImageButtonWithBackground}">
+                                    <Button.Resources>
+                                        <ImageSource x:Key="Img">/Source/Images/right arrow.png</ImageSource>
+                                    </Button.Resources>
+                                </Button>
+                            </Grid>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="7, 7, -3, 6" Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" Grid.ColumnSpan="1">
+                        <StackPanel Name="StackPanelFilesProperties" Orientation="Vertical">
+                            <!--<Label FontSize="20" Foreground="#FFC7C7C7" Content="TestSettings.ini" HorizontalContentAlignment="Center"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Template="{DynamicResource ResourceKey=SmallImageButtonWithBackground}">
+                                    <Button.Resources>
+                                        <ImageSource x:Key="Img">/Source/Images/left arrow.png</ImageSource>
+                                    </Button.Resources>
+                                </Button>
+                                <Label VerticalAlignment="Center" Grid.Column="1" FontSize="20" Foreground="#FFC7C7C7" Content="MusicAudioVolume" HorizontalContentAlignment="Left"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Template="{DynamicResource ResourceKey=SmallImageButtonWithBackground}">
+                                    <Button.Resources>
+                                        <ImageSource x:Key="Img">/Source/Images/left arrow.png</ImageSource>
+                                    </Button.Resources>
+                                </Button>
+                                <Label VerticalAlignment="Center" Grid.Column="1" FontSize="20" Foreground="#FFC7C7C7" Content="SFXAudioVolume" HorizontalContentAlignment="Left"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Template="{DynamicResource ResourceKey=SmallImageButtonWithBackground}">
+                                    <Button.Resources>
+                                        <ImageSource x:Key="Img">/Source/Images/left arrow.png</ImageSource>
+                                    </Button.Resources>
+                                </Button>
+                                <Label VerticalAlignment="Center" Grid.Column="1" FontSize="20" Foreground="#FFC7C7C7" Content="VoiceAudioVolume" HorizontalContentAlignment="Left"/>
+                            </Grid>-->
+
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <StackPanel Margin="0, 20, 0, 10" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="15" Orientation="Horizontal">
+                        <Button Width="150" Grid.Row="1" Margin="10, 0, 50, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Сохранить" Command="{Binding SaveParametersConfig}">
+
+                        </Button>
+                        <Button Visibility="Collapsed" Width="150" Grid.Row="1" Margin="20, 0, 20, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Отменить" Command="{Binding CancleParametersConfig}">
+
+                        </Button>
+                        <Button Visibility="Collapsed" Width="150" Grid.Row="1" Margin="50, 0, 10, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Настройки" Command="{Binding OpenOptionsConfig}">
+
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1" Visibility="{Binding OptionsConfigVisible}">
+
+                <Border Background="#FF101010" Opacity="0.6" Width="60" HorizontalAlignment="Left"/>
+                <Border Background="#FF101010" Opacity="0.5"/>
+                <Grid Margin="35,10,35,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.RowSpan="10" BorderThickness="2" BorderBrush="#FF303031" Grid.ColumnSpan="10" CornerRadius="20">
+                        <Border Grid.RowSpan="10" BorderThickness="1" BorderBrush="#474748" Grid.ColumnSpan="10" CornerRadius="20"/>
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF232D3E"/>
+                                <GradientStop Color="#FF1D222C" Offset="1"/>
+                                <GradientStop Color="#FF1D202C" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <ScrollViewer Grid.RowSpan="2" VerticalScrollBarVisibility="Hidden" Margin="0, 40, 0, 0">
+                        <StackPanel>
+                            <Border BorderThickness="0, 3, 0, 0" CornerRadius="30" Margin="100, 0">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF6F6F6F"/>
+                                        <GradientStop Color="#FF383838" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                            </Border>
+                            <Label Foreground="#FFC7C7C7" Content="Настройки конфига" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border BorderThickness="0, 3, 0, 0" CornerRadius="30" Margin="100, 0">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF6F6F6F"/>
+                                        <GradientStop Color="#FF383838" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                            </Border>
+                            
+                            <Grid HorizontalAlignment="Center" Margin="0, 50, 0, 50" Grid.Row="0"  Grid.ColumnSpan="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="130"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Foreground="#FFC7C7C7" Content="Название конфига: " FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" CaretBrush="#FFC7C7C7" Text="{Binding ConfigName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource TextBoxStyle}" Foreground="#FFC7C7C7" Padding="0, 5" Margin="0,0,10,0" Width="400" VerticalAlignment="Center" FontSize="20"/>
+                            </Grid>
+
+                            <Border BorderThickness="0, 2, 0, 0" CornerRadius="30" Margin="150, 0">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF6F6F6F"/>
+                                        <GradientStop Color="#FF383838" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                            </Border>
+                            <Label Foreground="#FFC7C7C7" Content="Конфиги для редактирования" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border BorderThickness="0, 2, 0, 0" CornerRadius="30" Margin="150, 0">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF6F6F6F"/>
+                                        <GradientStop Color="#FF383838" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                            </Border>
+
+                            <StackPanel Name="StackPanelConfigsList">
+                            </StackPanel>
+
+                            <Button Grid.Column="2" Margin="10, 20" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Command="{Binding AddConfigFile}" Content="Добавить файл">
+
+                            </Button>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+
+                    <Border Grid.Row="4" Grid.ColumnSpan="15" Background="{Binding ColorPanels}" Opacity="{Binding OpacityPanels}" CornerRadius="0, 0, 20, 20" Margin="3"/>
+                    <StackPanel Margin="0, 10, 0, 10" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="15" Orientation="Horizontal">
+                        <Button Width="150" Grid.Row="1" Margin="10, 0, 50, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Сохранить" Command="{Binding SaveOptionsConfig}">
+
+                        </Button>
+                        <Button Width="150" Grid.Row="1" Margin="50, 0, 10, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Отмена" Command="{Binding CancleOptionsConfig}">
+
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1" Visibility="{Binding OptionsVisible}">
+
+                <Border Background="#FF101010" Opacity="0.6" Width="60" HorizontalAlignment="Left"/>
+                <Border Background="#FF101010" Opacity="0.5"/>
+                <Grid Margin="35,10,35,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.RowSpan="10" BorderThickness="2" BorderBrush="#FF303031" Grid.ColumnSpan="10" CornerRadius="20">
+                        <Border Grid.RowSpan="10" BorderThickness="1" BorderBrush="#474748" Grid.ColumnSpan="10" CornerRadius="20"/>
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF232D3E"/>
+                                <GradientStop Color="#FF1D222C" Offset="1"/>
+                                <GradientStop Color="#FF1D202C" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <ScrollViewer Grid.RowSpan="2" VerticalScrollBarVisibility="Hidden" Margin="0, 50, 0, 0">
+                        <StackPanel >
+                            <Border BorderThickness="0, 3, 0, 0" CornerRadius="30" Margin="100, 0">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF6F6F6F"/>
+                                        <GradientStop Color="#FF383838" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                            </Border>
+                            <Label Foreground="#FFC7C7C7" Content="Настройки" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border BorderThickness="0, 3, 0, 0" CornerRadius="30" Margin="100, 0">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF6F6F6F"/>
+                                        <GradientStop Color="#FF383838" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                            </Border>
+
+
+                            <Grid HorizontalAlignment="Center" Margin="0, 20, 0, 50" Grid.Row="1" Grid.ColumnSpan="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Foreground="#FFC7C7C7" Text="Прозрачность панелей: " TextWrapping="Wrap" TextAlignment="Center" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Slider Style="{DynamicResource ResourceKey=SlidersStyle}" TickFrequency="0.1" Value="{Binding OpacityPanels}" Maximum="1" Minimum="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Width="400">
+                                    <Slider.Background>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF1E2531"/>
+                                            <GradientStop Color="#FF16191F" Offset="1"/>
+                                            <GradientStop Color="#FF1E212B" Offset="0.5"/>
+                                        </LinearGradientBrush>
+                                    </Slider.Background>
+                                </Slider>
+                                <TextBox Grid.Column="2" IsReadOnly="True" CaretBrush="#FFC7C7C7" Text="{Binding OpacityPanels}" TextAlignment="Center" Style="{DynamicResource TextBoxStyle}" Foreground="#FFC7C7C7" Padding="0, 5" Margin="10,0,0,0" MinWidth="120" VerticalAlignment="Center" FontSize="20"/>
+
+                            </Grid>
+
+
+
+                            <Grid HorizontalAlignment="Center" Margin="0, 0, 0, 50" Grid.Row="1" Grid.ColumnSpan="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Foreground="#FFC7C7C7" Text="Цвет панелей: " TextWrapping="Wrap" TextAlignment="Center" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <xctk:ColorPicker ColorMode="ColorCanvas" ShowTabHeaders="False" ShowAvailableColors="False" UsingAlphaChannel="False" Name="ColorPickerForPanels" SelectedColor="{Binding ColorPanels.Color, Mode=TwoWay}" Width="520" BorderThickness="0" BorderBrush="Transparent" Background="Transparent" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3">
+
+                                </xctk:ColorPicker>
+
+                            </Grid>
+
+
+                            <Grid HorizontalAlignment="Center" Margin="0, 0, 0, 50" Grid.Row="1" Grid.ColumnSpan="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label Foreground="#FFC7C7C7" Content="Задний фон: " FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" CaretBrush="#FFC7C7C7" Text="{Binding PathToTheBackground}" Style="{DynamicResource TextBoxStyle}" Foreground="#FFC7C7C7" Padding="0, 5" Margin="0,0,10,0" Width="400" VerticalAlignment="Center" FontSize="20"/>
+
+                                <Button Grid.Column="2" Command="{Binding BrowseBackgroundImage}" Margin="10, 0, 0, 0" Name="btnBrowsebackground" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" MinWidth="120" Content="Обзор ...">
+
+                                </Button>
+
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+
+
+                    <Border Grid.Row="4" Grid.ColumnSpan="15" Background="{Binding ColorPanels}" Opacity="{Binding OpacityPanels}" CornerRadius="0, 0, 20, 20" Margin="3"/>
+                    <StackPanel Margin="0, 10, 0, 10" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="15" Orientation="Horizontal">
+                        <Button Width="150" Grid.Row="1" Margin="10, 0, 50, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Сохранить" Command="{Binding SaveOptions}">
+
+                        </Button>
+                        <Button Width="150" Grid.Row="1" Margin="50, 0, 10, 0" VerticalAlignment="Center" Focusable="False" Template="{DynamicResource ResourceKey=BrowseButtonInOptions}" Content="Отмена" Command="{Binding CancleOptions}">
+
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+
+        </Grid>
+    </Grid>
+</Window>
