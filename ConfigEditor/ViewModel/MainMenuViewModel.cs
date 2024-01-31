@@ -42,7 +42,7 @@ namespace ConfigEditor.ViewModel
         #endregion
 
         #region VisibleFields
-        private Visibility _referenceVisible = Visibility.Hidden;
+        private Visibility _referenceVisible = Visibility.Visible;
         private Visibility _infoVisible = Visibility.Hidden;
         private Visibility _optionsVisible = Visibility.Hidden;
         private Visibility _optionsConfigVisible = Visibility.Hidden;
@@ -527,6 +527,12 @@ namespace ConfigEditor.ViewModel
             get
             {
                 return new RelayCommand<object>((parameter) => {
+                    OptionsConfigVisible = Visibility.Hidden;
+                    SettingsPropertysVisible = Visibility.Hidden;
+                    OptionsVisible = Visibility.Hidden;
+                    InfoVisible = Visibility.Hidden;
+                    ReferenceVisible = Visibility.Hidden;
+
                     ConfigName = parameter.ToString();
                     WorkSpaceVisible= Visibility.Visible;
                     GetParametersForEdit();
